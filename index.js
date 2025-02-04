@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
 const port = process.env.PORT || 4000
 const app = express()
@@ -27,14 +27,21 @@ async function run() {
         await client.connect();
 
         const campCollection = client.db('a10-fundingDB').collection('campaigns')
-
-        app.get('/campaigns', async(req,res)=>{
+        //here get(), for display stored data
+        app.get('/campaigns', async (req, res) => {
             const cursor = campCollection.find()
             const result = await cursor.toArray()
             res.send(result)
         })
-        
-        app.post('/campaigns',async (req, res)=>{
+        //display single data by id
+        app.get('/campaigns/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: new ObjectId(id) }
+            const result = await campCollection.findOne(query)
+            res.send(result)
+        })
+        // using post, for sending data to mongoDB
+        app.post('/campaigns', async (req, res) => {
             const data = req.body;
             const result = await campCollection.insertOne(data)
             res.send(result)
