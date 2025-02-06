@@ -27,6 +27,8 @@ async function run() {
         await client.connect();
 
         const campCollection = client.db('a10-fundingDB').collection('campaigns')
+        const userCollection = client.db('a10-fundingDB').collection('users')
+
         //here get(), for display stored data
         app.get('/campaigns', async (req, res) => {
             const cursor = campCollection.find()
@@ -47,6 +49,22 @@ async function run() {
             res.send(result)
             // console.log(result)
         })
+
+        // users apis
+        app.get('/users', async (req, res) => {
+            const cursor = userCollection.find()
+            const result = await cursor.toArray()
+            res.send(result)
+        })
+
+        app.post('/users', async (req, res) => {
+            const data = req.body
+            console.log(data)
+            const result = await userCollection.insertOne(data)
+            res.send(result)
+        })
+
+    
         // Send a ping to confirm a successful connection
         await client.db("admin").command({ ping: 1 });
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
