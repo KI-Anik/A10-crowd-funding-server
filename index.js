@@ -9,8 +9,8 @@ const app = express()
 app.use(express.json())
 app.use(cors())
 
-// const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.eko35.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
-const uri = 'mongodb://localhost:27017'
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.eko35.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
+// const uri = 'mongodb://localhost:27017'
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
@@ -27,7 +27,7 @@ async function run() {
         await client.connect();
 
         const campCollection = client.db('a10-fundingDB').collection('campaigns')
-        const userCollection = client.db('a10-fundingDB').collection('users')
+        const donarCollection = client.db('a10-fundingDB').collection('Donars')
 
         //here get(), for display stored data
         app.get('/campaigns', async (req, res) => {
@@ -54,11 +54,11 @@ async function run() {
             const id = req.params.id
             const data = req.body;
             const query = {_id: new ObjectId(id)}
-            const {title, desription,type,amount,date,image} = data
+            const {title, description,type,amount,date,image} = data
             const updateDoc ={
                 $set: {
                     title: title,
-                    desription:desription,
+                    description:description,
                     type:type,
                     amount:amount,
                     date:date,
@@ -79,7 +79,7 @@ async function run() {
 
         // users apis
         app.get('/users', async (req, res) => {
-            const cursor = userCollection.find()
+            const cursor = donarCollection.find()
             const result = await cursor.toArray()
             res.send(result)
         })
@@ -87,7 +87,7 @@ async function run() {
         app.post('/users', async (req, res) => {
             const data = req.body
             console.log(data)
-            const result = await userCollection.insertOne(data)
+            const result = await donarCollection.insertOne(data)
             res.send(result)
         })
 
