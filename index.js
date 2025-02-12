@@ -24,7 +24,7 @@ const client = new MongoClient(uri, {
 async function run() {
     try {
         // Connect the client to the server	(optional starting in v4.7)
-        await client.connect();
+        // await client.connect();
 
         const campCollection = client.db('a10-fundingDB').collection('campaigns')
         const donarCollection = client.db('a10-fundingDB').collection('Donars')
