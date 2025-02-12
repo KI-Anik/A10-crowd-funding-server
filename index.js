@@ -50,6 +50,25 @@ async function run() {
             // console.log(result)
         })
 
+        app.patch('/campaigns/:id', async(req,res)=>{
+            const id = req.params.id
+            const data = req.body;
+            const query = {_id: new ObjectId(id)}
+            const {title, desription,type,amount,date,image} = data
+            const updateDoc ={
+                $set: {
+                    title: title,
+                    desription:desription,
+                    type:type,
+                    amount:amount,
+                    date:date,
+                    image:image
+                }
+            }
+            const result = await campCollection.updateOne(query,updateDoc)
+            res.send(result)
+        })
+
         app.delete('/campaigns/:id', async(req,res)=>{
             const id = req.params.id
             const query = {_id: new ObjectId(id)}
