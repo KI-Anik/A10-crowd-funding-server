@@ -47,7 +47,6 @@ async function run() {
             const data = req.body;
             const result = await campCollection.insertOne(data)
             res.send(result)
-            // console.log(result)
         })
 
         app.patch('/campaigns/:id', async(req,res)=>{
@@ -74,19 +73,17 @@ async function run() {
             const query = {_id: new ObjectId(id)}
             const result = await campCollection.deleteOne(query)
             res.send(result)
-            console.log(result)
         })
 
-        // users apis
-        app.get('/users', async (req, res) => {
+        // Donars apis
+        app.get('/donars', async (req, res) => {
             const cursor = donarCollection.find()
             const result = await cursor.toArray()
             res.send(result)
         })
 
-        app.post('/users', async (req, res) => {
+        app.post('/donars', async (req, res) => {
             const data = req.body
-            console.log(data)
             const result = await donarCollection.insertOne(data)
             res.send(result)
         })
