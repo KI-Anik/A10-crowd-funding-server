@@ -1,6 +1,6 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-require('dotenv').config();
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
 const port = process.env.PORT || 4000
@@ -10,7 +10,6 @@ app.use(express.json())
 app.use(cors())
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.eko35.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
-// const uri = 'mongodb://localhost:27017'
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
@@ -49,28 +48,28 @@ async function run() {
             res.send(result)
         })
 
-        app.patch('/campaigns/:id', async(req,res)=>{
+        app.patch('/campaigns/:id', async (req, res) => {
             const id = req.params.id
             const data = req.body;
-            const query = {_id: new ObjectId(id)}
-            const {title, description,type,amount,date,image} = data
-            const updateDoc ={
+            const query = { _id: new ObjectId(id) }
+            const { title, description, type, amount, date, image } = data
+            const updateDoc = {
                 $set: {
                     title: title,
-                    description:description,
-                    type:type,
-                    amount:amount,
-                    date:date,
-                    image:image
+                    description: description,
+                    type: type,
+                    amount: amount,
+                    date: date,
+                    image: image
                 }
             }
-            const result = await campCollection.updateOne(query,updateDoc)
+            const result = await campCollection.updateOne(query, updateDoc)
             res.send(result)
         })
 
-        app.delete('/campaigns/:id', async(req,res)=>{
+        app.delete('/campaigns/:id', async (req, res) => {
             const id = req.params.id
-            const query = {_id: new ObjectId(id)}
+            const query = { _id: new ObjectId(id) }
             const result = await campCollection.deleteOne(query)
             res.send(result)
         })
@@ -88,8 +87,8 @@ async function run() {
             res.send(result)
         })
 
-      
-    
+
+
         // Send a ping to confirm a successful connection
         await client.db("admin").command({ ping: 1 });
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
